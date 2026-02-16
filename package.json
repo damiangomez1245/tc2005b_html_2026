@@ -1,0 +1,23 @@
+{
+  "name": "html",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/damiangomez1245/tc2005b_html_2026.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/damiangomez1245/tc2005b_html_2026/issues"
+  },
+  "homepage": "https://github.com/damiangomez1245/tc2005b_html_2026#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
