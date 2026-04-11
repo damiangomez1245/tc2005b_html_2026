@@ -3,29 +3,53 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("loginForm");
 
     if (form) {
-        form.addEventListener("submit", function (event) {
 
-            event.preventDefault(); 
+        form.addEventListener("submit", async function (event) {
 
-            const username = document.getElementById("username").value;
+            event.preventDefault();
+
+            const email = document.getElementById("username").value;
             const password = document.getElementById("password").value;
             const mensaje = document.getElementById("mensajeError");
 
-            const usuarioCorrecto = "admin";
-            const passwordCorrecto = "1234";
-
-            if (username === "" || password === "") {
+            if (email === "" || password === "") {
                 mensaje.textContent = "Todos los campos son obligatorios";
                 return;
             }
 
-            if (username === usuarioCorrecto && password === passwordCorrecto) {
-                window.location.href = "profile.html";
-            } else {
-                mensaje.textContent = "Usuario o contraseña incorrectos";
+            try {
+
+                const response = await fetch("http://localhost:3000/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+
+                    window.location.href = "profile.html";
+
+                } else {
+
+                    mensaje.textContent = data.message;
+
+                }
+
+            } catch (error) {
+
+                mensaje.textContent = "Error conectando con el servidor";
+
             }
 
         });
+
     }
 
 });
