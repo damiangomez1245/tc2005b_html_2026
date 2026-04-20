@@ -19,6 +19,7 @@
   "homepage": "https://github.com/damiangomez1245/tc2005b_html_2026#readme",
   "dependencies": {
     "bootstrap": "^5.3.8",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "express-static-gzip": "^3.0.0"
   }
 }

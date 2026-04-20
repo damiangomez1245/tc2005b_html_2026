@@ -1,55 +1,71 @@
+// 🔐 LOGIN
 document.addEventListener("DOMContentLoaded", () => {
 
-    const form = document.getElementById("loginForm");
+  const form = document.getElementById("loginForm");
 
-    if (form) {
+  if (form) {
+    form.addEventListener("submit", async function (event) {
 
-        form.addEventListener("submit", async function (event) {
+      event.preventDefault();
 
-            event.preventDefault();
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const mensaje = document.getElementById("mensajeError");
 
-            const email = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-            const mensaje = document.getElementById("mensajeError");
+      if (username === "" || password === "") {
+        mensaje.textContent = "Todos los campos son obligatorios";
+        return;
+      }
 
-            if (email === "" || password === "") {
-                mensaje.textContent = "Todos los campos son obligatorios";
-                return;
-            }
-
-            try {
-
-                const response = await fetch("http://localhost:3000/login", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-
-                    window.location.href = "profile.html";
-
-                } else {
-
-                    mensaje.textContent = data.message;
-
-                }
-
-            } catch (error) {
-
-                mensaje.textContent = "Error conectando con el servidor";
-
-            }
-
+      try {
+        const res = await fetch("http://localhost:3000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: username,
+            password: password
+          })
         });
 
-    }
+        const data = await res.json();
+
+        if (!res.ok) {
+          mensaje.textContent = data.message;
+          return;
+        }
+
+        localStorage.setItem("userId", data.user.user_id);
+
+        window.location.href = "tags.html";
+
+      } catch (error) {
+        mensaje.textContent = "Error de conexión";
+      }
+
+    });
+  }
 
 });
+
+
+// 🎮 FUNCIÓN GLOBAL (AQUÍ VA)
+function goToGame() {
+  const userId = localStorage.getItem("userId");
+
+  if (!userId) {
+    alert("Debes iniciar sesión");
+    window.location.href = "index.html";
+    return;
+  }
+
+  window.location.href = "game.html?id=" + userId;
+}
+
+
+// 🚪 LOGOUT (opcional pero recomendado)
+function logout() {
+  localStorage.removeItem("userId");
+  window.location.href = "index.html";
+}
